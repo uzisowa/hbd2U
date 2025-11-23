@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas - UTALETTA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* 雪の結晶（シンプル） */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            color: #e3f2fd;
+            font-size: 1.2em;
+            opacity: 0.7;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* カバーページ */
+        .cover-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #e3f2fd 0%, #ffffff 100%);
+        }
+
+        .main-message {
+            font-size: clamp(3rem, 12vw, 7rem);
+            font-weight: 700;
+            color: #1976d2;
+            margin-bottom: 30px;
+            letter-spacing: 0.05em;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .recipient {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            color: #424242;
+            font-weight: 400;
+            margin-bottom: 15px;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        .recipient-line {
+            width: clamp(200px, 60vw, 400px);
+            height: 3px;
+            background: #42a5f5;
+            margin: 0 auto 40px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: #757575;
+            margin-bottom: 15px;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+
+        .sender {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: #9e9e9e;
+            margin-bottom: 50px;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 45px;
+            background: #1976d2;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .download-btn:hover {
+            background: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+        }
+
+        .download-btn::before {
+            content: "🎵";
+            font-size: 1.3em;
+        }
+
+        .download-note {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: #9e9e9e;
+            margin-top: 15px;
+            animation: fadeIn 1s ease-out 0.7s both;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            color: #1976d2;
+            cursor: pointer;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+
+        .scroll-indicator::before {
+            content: "↓ ";
+        }
+
+        /* 歌詞セクション */
+        .lyrics-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 40px 20px;
+        }
+
+        .lyrics-section {
+            margin-bottom: 50px;
+            padding: 35px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .lyrics-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 600;
+            color: #1976d2;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+
+        .lyrics-text {
+            font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+            color: #424242;
+            white-space: pre-line;
+            line-height: 2;
+        }
+
+        /* ダウンロードセクション */
+        .download-section {
+            text-align: center;
+            padding: 70px 20px;
+            background: linear-gradient(180deg, #ffffff 0%, #e3f2fd 100%);
+            margin-top: 40px;
+        }
+
+        .download-section h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #1976d2;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .download-section p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: #757575;
+            margin-bottom: 35px;
+        }
+
+        /* フッター */
+        footer {
+            text-align: center;
+            padding: 50px 20px 35px;
+            background: white;
+            margin-top: 40px;
+        }
+
+        .footer-message-main {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: #1976d2;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .footer-message-sub {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            color: #424242;
+            margin-bottom: 12px;
+        }
+
+        .footer-sender {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: #757575;
+            margin-bottom: 25px;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #9e9e9e;
+        }
+
+        /* アニメーション */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* レスポンシブ調整 */
+        @media (max-width: 768px) {
+            .cover-page {
+                padding: 30px 15px;
+            }
+
+            .lyrics-container {
+                margin: 50px auto;
+                padding: 30px 15px;
+            }
+
+            .lyrics-section {
+                margin-bottom: 40px;
+                padding: 30px 20px;
+            }
+
+            .download-section {
+                padding: 60px 20px;
+            }
+
+            footer {
+                padding: 45px 20px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 雪の結晶（少なめ） -->
+    <div class="snowflake" style="left: 15%; animation-duration: 15s; animation-delay: 0s;">❄</div>
+    <div class="snowflake" style="left: 35%; animation-duration: 18s; animation-delay: 2s;">❄</div>
+    <div class="snowflake" style="left: 55%; animation-duration: 16s; animation-delay: 1s;">❄</div>
+    <div class="snowflake" style="left: 75%; animation-duration: 17s; animation-delay: 3s;">❄</div>
+    <div class="snowflake" style="left: 85%; animation-duration: 19s; animation-delay: 1.5s;">❄</div>
+
+    <!-- カバーページ -->
+    <section class="cover-page">
+        <h1 class="main-message">Merry Christmas!</h1>
+        <p class="recipient">あなたへ</p>
+        <div class="recipient-line"></div>
+        <p class="subtitle">Christmas Song 2025</p>
+        <p class="sender">From コンセプトグラマー</p>
+        <a href="https://www.dropbox.com/scl/fi/eagqo0fbum6j0yutahxqy/.mp3?rlkey=zigzqkkqrdteurp3dfwghbn6g&dl=1" class="download-btn" download>楽曲をダウンロード</a>
+        <p class="download-note">ダウンロードしてお楽しみください</p>
+        <div class="scroll-indicator" onclick="scrollToLyrics()">スクロールして歌詞を見る</div>
+    </section>
+
+    <!-- 歌詞セクション -->
+    <div class="lyrics-container">
+        <div class="lyrics-section">
+            <h2 class="section-title">Intro</h2>
+            <p class="lyrics-text">Hey! Hey! It's Christmas time!
+Yeah!</p>
+        </div>
+
+        <div class="lyrics-section">
+            <h2 class="section-title">Verse</h2>
+            <p class="lyrics-text">Snowflakes dancing in the air
+Everybody's gathering here
+Lights are twinkling everywhere
+Feel the joy, no time for fear</p>
+        </div>
+
+        <div class="lyrics-section">
+            <h2 class="section-title">Chorus</h2>
+            <p class="lyrics-text">Merry Christmas, let's go!
+Feel the rhythm, let it flow
+Dance and laugh the night away
+Making memories today
+Oh oh oh, it's Christmas time!
+Oh oh oh, you and I shine bright!</p>
+        </div>
+
+        <div class="lyrics-section">
+            <h2 class="section-title">Bridge</h2>
+            <p class="lyrics-text">Jingle bells and happy hearts
+This is where the party starts
+Come on everybody, clap your hands!</p>
+        </div>
+
+        <div class="lyrics-section">
+            <h2 class="section-title">Final Chorus</h2>
+            <p class="lyrics-text">Merry Christmas, let's go!
+Feel the rhythm, let it flow
+Oh oh oh, it's Christmas time!
+Oh oh oh, you and I shine bright!</p>
+        </div>
+
+        <div class="lyrics-section">
+            <h2 class="section-title">Outro</h2>
+            <p class="lyrics-text">Merry Christmas everybody!
+Yeah!</p>
+        </div>
+    </div>
+
+    <!-- ダウンロードセクション -->
+    <section class="download-section">
+        <h2>この曲をダウンロード</h2>
+        <p>あなたに贈る特別なクリスマスソングです</p>
+        <a href="https://www.dropbox.com/scl/fi/eagqo0fbum6j0yutahxqy/.mp3?rlkey=zigzqkkqrdteurp3dfwghbn6g&dl=1" class="download-btn" download>楽曲をダウンロード</a>
+        <p class="download-note">ダウンロードしてお楽しみください</p>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <p class="footer-message-main">Merry Christmas!</p>
+        <p class="footer-message-sub">素敵な夜をお過ごしください</p>
+        <p class="footer-sender">コンセプトグラマーより</p>
+        <p class="copyright">© 2025 UTALETTA</p>
+    </footer>
+
+    <script>
+        // スクロールアニメーション
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.lyrics-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // スムーズスクロール
+        function scrollToLyrics() {
+            document.querySelector('.lyrics-container').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
